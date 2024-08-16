@@ -1,0 +1,25 @@
+<div>
+  <h5>{{ investmentFund.name }}</h5>
+  <p><b>Minimum Payment: </b> ${{ investmentFund.minimumPayment.toLocaleString('en-US') }} COP</p>
+  <p><b>Category: </b> {{ investmentFund.category }}</p>
+  <p><b>State: </b> <span [className]="{
+    'text-success': investmentFund.state === 'Open',
+    'text-danger': investmentFund.state === 'Subscribed'
+  }">{{ investmentFund.state }}</span></p>
+</div>
+@if(investmentFund.state === 'Open'){
+  <div>
+    <input
+      type="number"
+      placeholder="Amount"
+      [(ngModel)]="amountPayment"
+      class="form-control m-1"
+    />
+    <button
+      class="btn btn-primary mt-4"
+      (click)="subscribe(investmentFund.id)"
+    >
+      Subscribe
+    </button>
+  </div>
+}

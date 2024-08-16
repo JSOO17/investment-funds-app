@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, throwError, catchError } from 'rxjs';
-import { environment } from '../../enviroments/enviroments';
+import { environment } from '../../../enviroments/enviroments';
+import { InvestmentFundResponse } from '../investment-fund-service/investment-fund.service';
 
 export interface SubscriptionResponse {
   id: string;
-  investorId: string;
-  investmentFundId: string;
+  investmentFundDetails: InvestmentFundResponse;
   amountPayment: number;
 }
 
@@ -25,7 +25,7 @@ export interface CancelRequest {
   providedIn: 'root'
 })
 export class SubscriptionService {
-  private apiUrl = `${environment.apiUrl}/subscriptions`;
+  private apiUrl = `${environment.apiUrl}/api/subscription`;
 
   constructor(private http: HttpClient) { }
 
@@ -34,7 +34,9 @@ export class SubscriptionService {
   }
 
   subscribe(request: SubscriptionRequest): Observable<void> {
-    return this.http.post<void>(this.apiUrl, request);
+    return this.http.post<void>(this.apiUrl, request).pipe(
+      catchError(this.handleError)
+    );
   }
 
   cancel(request: CancelRequest): Observable<void> {
@@ -47,6 +49,6 @@ export class SubscriptionService {
 
   private handleError(error: any) {
     console.error('An error occurred:', error);
-    return throwError(error.message || 'Server error');
+    return throwError(error.error || 'Server error');
   }
 }

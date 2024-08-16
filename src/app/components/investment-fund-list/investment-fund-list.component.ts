@@ -1,42 +1,41 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { InvestmentFundService, InvestmentFundResponse } from '../../services/investment-fund.service';
-import { SubscriptionRequest, SubscriptionService } from '../../services/subscription.service';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { InvestmentFundService, InvestmentFundResponse } from '../../services/investment-fund-service/investment-fund.service';
+import { FormsModule } from '@angular/forms';
+import { CommonModule } from '@angular/common';
+import { InvestmentFundItemComponent } from '../investment-fund-item/investment-fund-item.component';
 
 @Component({
   selector: 'app-investment-fund-list',
   templateUrl: './investment-fund-list.component.html',
-  styleUrls: ['./investment-fund-list.component.css']
+  styleUrls: ['./investment-fund-list.component.css'],
+  standalone: true,
+  imports: [
+    FormsModule,
+    CommonModule,
+    InvestmentFundItemComponent
+  ]
 })
 export class InvestmentFundListComponent implements OnInit {
   investmentFunds: InvestmentFundResponse[] = [];
-  selectedInvestorId: string = '8d4ad04f-d9a5-414d-88c2-7f8d806ef119';
-  @Input() amountPayment: number = 0;
+  amountPayment: number = 0;
+
+
 
   constructor(
-    private investmentFundService: InvestmentFundService,
-    private subscriptionService: SubscriptionService
+    private investmentFundService: InvestmentFundService
   ) { }
 
   ngOnInit(): void {
     this.investmentFundService.getInvestmentFunds().subscribe(
-      (data) => this.investmentFunds = data,
-      (error) => console.error('Error fetching investment funds:', error)
+      (data) => {
+        this.investmentFunds = data;
+      }
     );
+
+    console.log(this.investmentFunds)
   }
 
-  subscribe(investmentFundId: string) {
-    const request: SubscriptionRequest = {
-      investorId: this.selectedInvestorId,
-      investmentFundId: investmentFundId,
-      amountPayment: this.amountPayment
-    };
-
-    this.subscriptionService.subscribe(request).subscribe(
-      () => {
-        alert('Subscription successful');
-        // Opcional: actualizar la lista o realizar otras acciones tras la suscripción
-      },
-      (error) => alert('Subscription failed: ' + error)
-    );
+  handleDataChangedFromItem() {
+    this.ngOnInit()
   }
 }

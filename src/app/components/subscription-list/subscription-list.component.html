@@ -1,21 +1,31 @@
 <div class="container">
-  <h2>Subscription List</h2>
-  <div *ngIf="subscriptions.length > 0">
-    <ul class="list-group">
-      <li *ngFor="let subscription of subscriptions" class="list-group-item d-flex justify-content-between align-items-center">
-        <div>
-          ID: {{ subscription.id }}, Investor ID: {{ subscription.investorId }}, Amount: {{ subscription.amountPayment }}
-        </div>
-        <button
-          class="btn btn-danger"
-          (click)="cancelSubscription(subscription.id)"
-        >
-          Cancel
-        </button>
-      </li>
-    </ul>
-  </div>
-  <div *ngIf="subscriptions.length === 0">
-    <p>No subscriptions available.</p>
-  </div>
+  <h2>Subscription</h2>
+  @if (subscriptions.length > 0) {
+    <div>
+      <ul class="list-group">
+        @for (subscription of subscriptions; track subscription.id) {
+          <li class="list-group-item d-flex justify-content-between align-items-center my-2">
+            <div>
+              <h5>ID: {{ subscription.id }}</h5>
+              <p><b>Investment Fund: </b>{{ subscription.investmentFundDetails.name }}</p>
+              <p><b>Amount: </b> ${{ subscription.amountPayment.toLocaleString('en-US') }} COP</p>
+            </div>
+            <button
+              class="btn btn-danger"
+              (click)="cancelSubscription(subscription.id)"
+            >
+              Cancel
+            </button>
+          </li>
+        }
+
+      </ul>
+    </div>
+  }
+  @if (subscriptions.length === 0) {
+    <div>
+      <p>No subscriptions available.</p>
+    </div>
+  }
+
 </div>

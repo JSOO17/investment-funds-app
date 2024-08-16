@@ -4,7 +4,7 @@ import { appConfig } from './app/app.config';
 
 bootstrapApplication(AppComponent, {
   providers: [
-    ...appConfig // Usa el spread operator para incluir todos los proveedores definidos en appConfig
+    ...appConfig
   ]
 })
 .catch(err => console.error(err));

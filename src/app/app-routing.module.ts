@@ -1,16 +1,11 @@
-import { RouterModule, Routes } from '@angular/router';
+import { Routes } from '@angular/router';
 import { SubscriptionListComponent } from './components/subscription-list/subscription-list.component';
-import { NgModule } from '@angular/core';
 import { InvestmentFundListComponent } from './components/investment-fund-list/investment-fund-list.component';
+import { TransactionListComponent } from './components/transaction-list/transaction-list.component';
 
-const routes: Routes = [
-  { path: '', redirectTo: '/subscriptions', pathMatch: 'full' },
+export const routes: Routes = [
+  { path: '', redirectTo: '/investmentFunds', pathMatch: 'full' },
   { path: 'subscriptions', component: SubscriptionListComponent },
   { path: 'investmentFunds', component: InvestmentFundListComponent },
+  { path: 'transactions', component: TransactionListComponent },
 ];
-
-@NgModule({
-  imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
-})
-export class AppRoutingModule { }
